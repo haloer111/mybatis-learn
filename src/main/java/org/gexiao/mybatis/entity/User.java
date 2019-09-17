@@ -1,4 +1,4 @@
-package org.gexiao.entity;
+package org.gexiao.mybatis.entity;
 
 import lombok.Data;
 
