@@ -1,6 +1,7 @@
 package org.gexiao.mybatis.entity;
 
 import lombok.Data;
+import org.apache.ibatis.type.Alias;
 
 /**
  * @Auther: gexiao
@@ -8,6 +9,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@Alias("user")
 public class User {
     private Long id;
     private String name;

@@ -13,6 +13,8 @@ public interface UserMapper {
 
     User getById(@Param("id") Long id);
 
+    User getById2(@Param("id") Long id);
+
     @Select("select id,name,age,sex from user where id = #{id}")
     User getById1(@Param("id") Long id);
 

@@ -63,7 +63,7 @@ public class DBConnectionTest {
 //    }
 
     @Before
-    public void prePareBySqlSessionFactoryUtil(){
+    public void prepareBySqlSessionFactoryUtil(){
         sqlSession = SqlSessionFactoryUtil.getInstance().openSession();
     }
 
@@ -84,6 +84,16 @@ public class DBConnectionTest {
         //如果方法名没有重复的可以简写 “方法名” 的方式
 //        User selectOne = (User)sqlSession.selectOne("getById1", 1L);
         System.out.println("user = " + selectOne);
+    }
+    /**
+     * 查询user根据id
+     */
+    @Test
+    public void getById2() {
+        //方式一
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = mapper.getById2(1L);
+        System.out.println("user = " + user);
     }
 
     /**
