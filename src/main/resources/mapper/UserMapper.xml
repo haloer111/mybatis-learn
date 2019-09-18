@@ -4,9 +4,10 @@
     <resultMap id="userMap" type="user">
         <id jdbcType="BIGINT" javaType="long" property="id" column="id"/>
         <result column="name" property="name" typeHandler="org.gexiao.mybatis.type.MyStringTypeHandler"/>
-        <result column="sex" property="sex" javaType="int" jdbcType="INTEGER"/>
-        <result column="age" property="age" />
+        <result column="sex" property="sex" typeHandler="org.gexiao.mybatis.type.SexEnumTypeHandler"/>
+        <result column="age" property="age"/>
     </resultMap>
+
     <select id="getById" parameterType="long" resultType="user">
         select id,name,age,sex from user where id = #{id}
     </select>
@@ -14,11 +15,22 @@
         select id,name,age,sex from user where id = #{id}
     </select>
 
-    <insert id="insert" parameterType="user">
-        insert into user(name,age,sex) values (#{user.name},#{user.age},#{user.sex})
+    <insert id="insert" parameterType="user" >
+        insert into user(name,age,sex) values (#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
+    </insert>
+
+    <insert id="insert1" parameterType="user" keyProperty="id" useGeneratedKeys="true" >
+        insert into user(name,age,sex) values (#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
+    </insert>
+
+    <insert id="insert2" parameterType="user" keyProperty="id" useGeneratedKeys="true" >
+        <selectKey  resultType="long" keyProperty="id" order="BEFORE" >
+            SELECT if(max(id) is null ,1,max(id)+100) as newId from user
+        </selectKey>
+        insert into user(id,name,age,sex) values (#{id},#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
     </insert>
 
     <delete id="deleteById" parameterType="long">
-        delete from user where id  = #{id}
-    </delete>
+        delete from user where id = #{id}
+        </delete>
 </mapper>

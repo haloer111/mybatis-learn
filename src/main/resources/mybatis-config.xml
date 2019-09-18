@@ -12,7 +12,9 @@
         <package name="org.gexiao.mybatis.entity"/>
     </typeAliases>
     <typeHandlers>
-        <typeHandler handler="org.gexiao.mybatis.type.MyStringTypeHandler"/>
+        <!--<typeHandler handler="org.gexiao.mybatis.type.MyStringTypeHandler"/>-->
+        <typeHandler handler="org.apache.ibatis.type.EnumOrdinalTypeHandler" javaType="org.gexiao.mybatis.enums.Sex"/>
+        <package name="org.gexiao.mybatis.type"/>
     </typeHandlers>
     <!--定义数据库环境-->
     <environments default="development">

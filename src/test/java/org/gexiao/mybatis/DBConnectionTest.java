@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.gexiao.mybatis.dao.UserMapper;
 import org.gexiao.mybatis.entity.User;
+import org.gexiao.mybatis.enums.Sex;
 import org.gexiao.mybatis.util.SqlSessionFactoryUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -102,13 +103,46 @@ public class DBConnectionTest {
     @Test
     public void insert(){
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-        int result = mapper.insert(new User() {{
+        User user = new User() {{
             setAge(15);
-            setSex(0);
+            setSex(Sex.FEMALE);
             setName("小王八");
-        }});
+        }};
+        Long result = mapper.insert(user);
         sqlSession.commit();
-        Assert.assertTrue(result==1);
+    }
+
+    /**
+     * 插入一条数据，返回id
+     */
+    @Test
+    public void insert1(){
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = new User() {{
+            setAge(15);
+            setSex(Sex.FEMALE);
+            setName("小王八");
+        }};
+        //这只是返回是否插入成功的结果，如果设置了插入回调主键，应该从user对象中去获取id
+        Long result = mapper.insert1(user);
+        sqlSession.commit();
+        Assert.assertNotNull(user.getId());
+    }
+    /**
+     * 插入一条数据，返回id
+     */
+    @Test
+    public void insert2(){
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = new User() {{
+            setAge(15);
+            setSex(Sex.FEMALE);
+            setName("小王八");
+        }};
+        //这只是返回是否插入成功的结果，如果设置了插入回调主键，应该从user对象中去获取id
+        Long result = mapper.insert2(user);
+        sqlSession.commit();
+        Assert.assertNotNull(user.getId());
     }
 
     @Test

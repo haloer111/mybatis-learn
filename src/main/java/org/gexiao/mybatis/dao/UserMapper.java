@@ -18,7 +18,9 @@ public interface UserMapper {
     @Select("select id,name,age,sex from user where id = #{id}")
     User getById1(@Param("id") Long id);
 
-    int insert(@Param("user") User user);
+    Long insert( User user);
+    Long insert1( User user);
+    Long insert2( User user);
 
     int deleteById(@Param("id") Long id);
 }
