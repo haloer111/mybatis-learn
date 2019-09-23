@@ -8,29 +8,49 @@
         <result column="age" property="age"/>
     </resultMap>
 
+    <sql id="allColumns">
+        id,name,age,sex
+    </sql>
+
+    <sql id="allColumnsUsePrefix">
+        ${prefix}.id,${prefix}.name,${prefix}.age,${prefix}.sex
+    </sql>
+
     <select id="getById" parameterType="long" resultType="user">
-        select id,name,age,sex from user where id = #{id}
+        select
+        <include refid="allColumns"/>
+        from user where id = #{id}
     </select>
+
     <select id="getById2" parameterType="long" resultMap="userMap">
         select id,name,age,sex from user where id = #{id}
     </select>
 
-    <insert id="insert" parameterType="user" >
+    <select id="getById3" parameterType="map" resultMap="userMap">
+        select
+        <include refid="allColumnsUsePrefix">
+            <property name="prefix" value="r"/>
+        </include>
+        from ${tableName} r where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="user">
         insert into user(name,age,sex) values (#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
     </insert>
 
-    <insert id="insert1" parameterType="user" keyProperty="id" useGeneratedKeys="true" >
+    <insert id="insert1" parameterType="user" keyProperty="id" useGeneratedKeys="true">
         insert into user(name,age,sex) values (#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
     </insert>
 
-    <insert id="insert2" parameterType="user" keyProperty="id" useGeneratedKeys="true" >
-        <selectKey  resultType="long" keyProperty="id" order="BEFORE" >
+    <insert id="insert2" parameterType="user" keyProperty="id" useGeneratedKeys="true">
+        <selectKey resultType="long" keyProperty="id" order="BEFORE">
             SELECT if(max(id) is null ,1,max(id)+100) as newId from user
         </selectKey>
-        insert into user(id,name,age,sex) values (#{id},#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
+        insert into user(id,name,age,sex) values
+        (#{id},#{name},#{age},#{sex,typeHandler=org.gexiao.mybatis.type.SexEnumTypeHandler})
     </insert>
 
-    <delete id="deleteById" parameterType="long">
+    <delete id="deleteById" parameterType="long">``
         delete from user where id = #{id}
         </delete>
 </mapper>

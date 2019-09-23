@@ -37,6 +37,7 @@ public class DBConnectionTest {
 
     /**
      * 使用java代码的方式创建SqlSessionFactory，一般不使用这种方式
+     *
      * @throws IOException
      */
 //    @Before
@@ -62,9 +63,8 @@ public class DBConnectionTest {
 //        configuration.getTypeAliasRegistry().registerAlias("user", User.class);
 //        factory = new SqlSessionFactoryBuilder().build(configuration);
 //    }
-
     @Before
-    public void prepareBySqlSessionFactoryUtil(){
+    public void prepareBySqlSessionFactoryUtil() {
         sqlSession = SqlSessionFactoryUtil.getInstance().openSession();
     }
 
@@ -81,11 +81,12 @@ public class DBConnectionTest {
         //方式二
 
         //”mapper全限名+方法名“
-        User selectOne = (User)sqlSession.selectOne("org.gexiao.mybatis.dao.UserMapper.getById1", 1L);
+        User selectOne = (User) sqlSession.selectOne("org.gexiao.mybatis.dao.UserMapper.getById", 1L);
         //如果方法名没有重复的可以简写 “方法名” 的方式
 //        User selectOne = (User)sqlSession.selectOne("getById1", 1L);
         System.out.println("user = " + selectOne);
     }
+
     /**
      * 查询user根据id
      */
@@ -97,11 +98,19 @@ public class DBConnectionTest {
         System.out.println("user = " + user);
     }
 
+    @Test
+    public void getById3() {
+        //方式一
+        UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+        User user = mapper.getById3("user", 1L);
+        System.out.println("user = " + user);
+    }
+
     /**
      * 插入一条数据
      */
     @Test
-    public void insert(){
+    public void insert() {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         User user = new User() {{
             setAge(15);
@@ -116,7 +125,7 @@ public class DBConnectionTest {
      * 插入一条数据，返回id
      */
     @Test
-    public void insert1(){
+    public void insert1() {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         User user = new User() {{
             setAge(15);
@@ -128,11 +137,12 @@ public class DBConnectionTest {
         sqlSession.commit();
         Assert.assertNotNull(user.getId());
     }
+
     /**
      * 插入一条数据，返回id
      */
     @Test
-    public void insert2(){
+    public void insert2() {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         User user = new User() {{
             setAge(15);
@@ -146,11 +156,11 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void deleteById(){
+    public void deleteById() {
         UserMapper mapper = sqlSession.getMapper(UserMapper.class);
         int result = mapper.deleteById(9L);
         sqlSession.commit();
-        Assert.assertTrue(result==1);
+        Assert.assertTrue(result == 1);
 
     }
 }
